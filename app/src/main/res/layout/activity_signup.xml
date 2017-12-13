@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="me.zchi.lazyaccounts.LoginActivity">
+    tools:context="me.zchi.lazyaccounts.SignupActivity">
 
     <!-- Login progress -->
     <ProgressBar
@@ -69,22 +69,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/action_sign_in"
+                android:text="@string/action_sign_up"
                 android:textStyle="bold" />
-            <GridLayout
-                android:id="@+id/email_login_action"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <Button
-                    android:id="@+id/email_sign_up_button"
-                    style="?android:textAppearanceSmall"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/action_go_sign"
-                    android:textStyle="bold" />
-            </GridLayout>
 
         </LinearLayout>
     </ScrollView>
