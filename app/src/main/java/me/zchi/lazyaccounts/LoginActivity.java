@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -83,6 +84,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // 读取用户登陆信息
+        SharedPreferences sp = getSharedPreferences("userInfo", 0);
+        String token = sp.getString("token", "");
+        if (token.length() > 0) {
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
         setContentView(R.layout.activity_login);
         // Set up the login form.
         mEmailView = findViewById(R.id.email);
@@ -213,19 +224,22 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // perform the user login attempt.
             showProgress(true);
             RequestQueue mQueue = Volley.newRequestQueue(getApplicationContext());
-            StringRequest stringRequest = new StringRequest(Request.Method.POST,"http://192.168.31.251/api/login", new Response.Listener<String>() {
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.31.251/api/login", new Response.Listener<String>() {
                 @Override
                 public void onResponse(String s) {
                     Log.d("http", "onResponse: " + s);
                     try {
                         JSONObject json = new JSONObject(s);
-                        if(json.getInt("code")==CODE_SUCCESS){
+                        if (json.getInt("code") == CODE_SUCCESS) {
+                            SharedPreferences sp=getSharedPreferences("userInfo",0);
+                            SharedPreferences.Editor editor=sp.edit();
+                            editor.putString("token",json.getString("token"));
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(intent);
                             finish();
-                        }else{
+                        } else {
                             Toast.makeText(getApplicationContext(), json.getString("message"), Toast.LENGTH_SHORT).show();
-                            recreate();
+                            showProgress(false);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -235,13 +249,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 @Override
                 public void onErrorResponse(VolleyError volleyError) {
                     Log.e("http", volleyError.getMessage(), volleyError);
+                    Toast.makeText(getApplicationContext(),volleyError.getMessage(), Toast.LENGTH_SHORT).show();
                     recreate();
                 }
-            }){
-                protected Map<String, String> getParams()throws AuthFailureError {
-                    Map<String, String> map=new HashMap<>();
-                    map.put("email",mEmailView.getText().toString());
-                    map.put("password",mPasswordView.getText().toString());
+            }) {
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> map = new HashMap<>();
+                    map.put("email", mEmailView.getText().toString());
+                    map.put("password", mPasswordView.getText().toString());
                     return map;
                 }
             };
