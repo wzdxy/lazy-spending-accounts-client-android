@@ -165,7 +165,11 @@ public class SignupActivity extends AppCompatActivity implements LoaderCallbacks
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+        if (TextUtils.isEmpty(password)){
+            mPasswordView.setError(getString(R.string.error_field_required));
+            focusView = mPasswordView;
+            cancel = true;
+        }else if (!isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
@@ -183,12 +187,8 @@ public class SignupActivity extends AppCompatActivity implements LoaderCallbacks
         }
 
         if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
             focusView.requestFocus();
         } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
             showProgress(true);
             RequestQueue mQueue = Volley.newRequestQueue(getApplicationContext());
             StringRequest stringRequest = new StringRequest(Request.Method.POST,"http://192.168.31.251/api/signup", new Response.Listener<String>() {
@@ -217,8 +217,10 @@ public class SignupActivity extends AppCompatActivity implements LoaderCallbacks
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError volleyError) {
-                    Log.e("http", volleyError.getMessage(), volleyError);
-                    recreate();
+                    String message=new String(volleyError.networkResponse.data);
+                    Log.e("http", message, volleyError);
+                    Toast.makeText(getApplicationContext(),message, Toast.LENGTH_SHORT).show();
+                    showProgress(false);
                 }
             }){
                 protected Map<String, String> getParams()throws AuthFailureError{

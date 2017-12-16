@@ -234,6 +234,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             SharedPreferences sp=getSharedPreferences("userInfo",0);
                             SharedPreferences.Editor editor=sp.edit();
                             editor.putString("token",json.getString("token"));
+                            editor.commit();
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(intent);
                             finish();
@@ -248,9 +249,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError volleyError) {
-                    Log.e("http", volleyError.getMessage(), volleyError);
-                    Toast.makeText(getApplicationContext(),volleyError.getMessage(), Toast.LENGTH_SHORT).show();
-                    recreate();
+                    String message=new String(volleyError.networkResponse.data);
+                    Log.e("http", message, volleyError);
+                    Toast.makeText(getApplicationContext(),message, Toast.LENGTH_SHORT).show();
+                    showProgress(false);
                 }
             }) {
                 protected Map<String, String> getParams() throws AuthFailureError {
