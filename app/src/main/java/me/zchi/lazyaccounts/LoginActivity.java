@@ -234,9 +234,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             SharedPreferences sp=getSharedPreferences("userInfo",0);
                             SharedPreferences.Editor editor=sp.edit();
                             editor.putString("token",json.getString("token"));
+                            editor.putString("email",mEmailView.getText().toString());
                             editor.commit();
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(intent);
+                            Toast.makeText(getApplicationContext(), R.string.log_in_success, Toast.LENGTH_SHORT).show();
                             finish();
                         } else {
                             Toast.makeText(getApplicationContext(), json.getString("message"), Toast.LENGTH_SHORT).show();

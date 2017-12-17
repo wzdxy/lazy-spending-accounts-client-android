@@ -1,6 +1,7 @@
 package me.zchi.lazyaccounts;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -40,7 +41,17 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()){
             case R.id.top_menu_settings:{
-                Toast.makeText(getApplicationContext(),"Settings to be continued",Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(this,SettingsActivity.class);
+                startActivity(intent);
+                return true;
+            }
+            case R.id.top_menu_user:{
+                Intent intent = new Intent(this,UserActivity.class);
+                startActivity(intent);
+                return true;
+            }
+            case R.id.top_menu_refresh:{
+                Toast.makeText(getApplicationContext(),"Dev ing",Toast.LENGTH_LONG).show();
                 return true;
             }
         }
