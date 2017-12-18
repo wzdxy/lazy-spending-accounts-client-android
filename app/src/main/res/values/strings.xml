@@ -106,4 +106,8 @@
     <string name="pref_ringtone_silent">Silent</string>
 
     <string name="pref_title_vibrate">Vibrate</string>
+
+    <string name="hello_add_fragment">Hello add fragment</string>
+    <string name="hello_account_fragment">Hello account fragment</string>
+    <string name="hello_report_fragment">Hello report fragment</string>
 </resources>
