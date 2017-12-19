@@ -7,15 +7,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <TextView
+        <WebView
+            android:id="@+id/add_web"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/hello_add_fragment" />
-        <EditText
-            android:id="@+id/phone"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:hint="金额"
-            android:inputType="phone" />
+            android:layout_height="fill_parent">
+        </WebView>
     </LinearLayout>
 </FrameLayout>
