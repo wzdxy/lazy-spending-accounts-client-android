@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
         navigation = findViewById(R.id.navigation);
         viewPager = findViewById(R.id.viewPager);
+        viewPager.setOffscreenPageLimit(2);
 
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
