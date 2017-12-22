@@ -1,89 +1,128 @@
 <template>
     <div id="app">
         <v-app>
-            <!--<v-container fluid="fluid" class="text-xs-center" style="padding: 0;">-->
-                <v-layout row wrap class="text-xs-center">
-                    <v-flex xs12>
-                        <v-card height="300px" flat color="white">
-                            <v-card-text>
-                                <img v-bind:src="logoImg"/>
+            <v-layout row wrap class="text-xs-center">
+                <v-flex xs12>
+                    <v-card height="100%" flat color="white">
+                        <v-card-text row wrap>
 
-                                <div>
-                                    <v-btn color="primary" @click.stop="dialog = true">Open Dialog 1</v-btn>
-                                </div>
-                                <div>
-                                    <v-btn color="error">Error</v-btn>
-                                </div>
-                                <div>
-                                    <v-btn light disabled>Disabled</v-btn>
-                                </div>
-                            </v-card-text>
-                        </v-card>
-                    </v-flex>
-                </v-layout>
 
-            <!--</v-container>-->
-            <v-dialog v-model="dialog">
-                <v-layout row wrap>
-                    <v-flex xs12>
-                        <v-card flat >
-                            <v-card-text>
-                                <div>
-                                    <v-btn color="primary">Primary</v-btn>
-                                </div>
-                                <div>
-                                    <v-btn color="error">Error</v-btn>
-                                </div>
-                                <div>
-                                    <v-btn color="primary" disabled>Disabled</v-btn>
-                                </div>
-                            </v-card-text>
-                            <v-card-actions>
-                                <v-btn color="primary" flat @click.stop="dialog=false">Close</v-btn>
-                            </v-card-actions>
-                        </v-card>
-                    </v-flex>
-                </v-layout>
-
-            </v-dialog>
+                            <v-flex xs12>
+                                <v-dialog persistent width="290px" id="data-dialog">
+                                    <v-text-field
+                                            slot="activator"
+                                            label="Date"
+                                            v-model="costDate"
+                                            prepend-icon="event"
+                                            readonly
+                                    ></v-text-field>
+                                    <v-date-picker v-model="costDate" actions>
+                                        <template slot-scope="{ save, cancel }">
+                                            <v-card-actions>
+                                                <v-spacer></v-spacer>
+                                                <v-btn flat color="primary" @click="cancel">Cancel</v-btn>
+                                                <v-btn flat color="primary" @click="save">OK</v-btn>
+                                            </v-card-actions>
+                                        </template>
+                                    </v-date-picker>
+                                </v-dialog><v-dialog persistent width="290px" id="time-dialog">
+                                    <v-text-field
+                                            slot="activator"
+                                            label="Time"
+                                            placeholder="Let me go"
+                                            v-model="costTime"
+                                            prepend-icon="access_time"
+                                            readonly
+                                    ></v-text-field>
+                                    <v-time-picker v-model="costTime" actions format="24hr">
+                                        <template slot-scope="{ save, cancel }">
+                                            <v-card-actions>
+                                                <v-btn flat color="primary" @click="cancel">Cancel</v-btn>
+                                                <v-btn flat color="primary" @click="save">Save</v-btn>
+                                            </v-card-actions>
+                                        </template>
+                                    </v-time-picker>
+                                </v-dialog>
+                            </v-flex>
+                            <v-select
+                                    xs12
+                                    label="Serial"
+                                    v-bind:items="allSerial"
+                                    v-model="serial"
+                                    max-height="300"
+                            ></v-select>
+                            <v-text-field
+                                    label="Cost"
+                                    type="number"
+                                    v-model="cost"
+                            ></v-text-field>
+                        </v-card-text>
+                        <v-card-actions style="flex-direction: row-reverse;">
+                            <v-btn primary  @click="saveCost">Save</v-btn>
+                            <v-btn flat  @click="resetForm">Reset</v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-flex>
+            </v-layout>
         </v-app>
     </div>
 
 </template>
 
 <script>
-    import logo from 'assets/img/logo.png'
-    import modal from 'components/modal.vue'
 
     export default {
-        components: {
-            modal
-        },
         data() {
             return {
-                msg: 'Use Vue 2.0 Today!',
-                logoImg: logo,
-                dialog: false
+                allSerial: ['Alabama', 'Alaska', 'American Samoa', 'Arizona', 'Oklahoma', 'Oregon', 'Palau', 'Pennsylvania', 'Puerto Rico'],
+                serial: [],
+                cost: '',
+                costDate: '',
+                costTime: ''
             }
         },
         methods: {
-            gogogo() {
-                location.assign('../customer/home.html')
+            saveCost() {
+                if(this.cost==='')return 0;
+                if(window.native)native.addAccount(JSON.stringify({
+                    cost:this.cost,
+                    costDate:this.costDate,
+                    costTime:this.costTime,
+                    serial:this.serial
+                }))
             },
-            tototo() {
-                location.assign('../user/login.html')
+            resetForm() {
+                let today=new Date()
+                this.costDate=today.getFullYear()+'-'+(today.getMonth()+1+'-').padLeft(3,'0')+String(today.getDate()).padLeft(2,'0')
+                this.time=''
+                this.cost=''
+                this.serial=[]
             }
+        },
+        created(){
+            this.resetForm();
         }
     }
 </script>
 
 <style lang="postcss">
-    .index-card {
-        width: 800px;
-        margin: 100px auto;
+    .input-group {
+        /*padding-top:6px;*/
     }
 
-    img {
-        height: 100px;
+    .picker__title {
+        display: none;
+    }
+
+    .card__text>div{
+        height: 56px;
+    }
+
+    .picker--time > .picker__title {
+        display: none;
+    }
+
+    #data-dialog, #time-dialog {
+        width: 50%;
     }
 </style>

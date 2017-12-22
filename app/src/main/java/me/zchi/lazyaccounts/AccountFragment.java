@@ -15,20 +15,30 @@ import android.webkit.WebViewClient;
  */
 public class AccountFragment extends Fragment {
 
+    private WebView wv1;
+
     public AccountFragment() {
         // Required empty public constructor
     }
-
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_account, container, false);
-        WebView wv1 = rootView.findViewById(R.id.account_web);
-        wv1.loadUrl("file:///android_asset/account/index.html");
+        wv1 = rootView.findViewById(R.id.account_web);
+        wv1.loadUrl("file:///android_asset/html_dist/account/index.html");
 //        wv1.loadUrl("https://vuetifyjs.com/components/alerts");
         wv1.getSettings().setJavaScriptEnabled(true);
         wv1.setWebViewClient(new WebViewClient());
         return rootView;
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        wv1.destroy();
+        wv1.removeAllViews();
+        wv1.clearHistory();
+        wv1=null;
     }
 }

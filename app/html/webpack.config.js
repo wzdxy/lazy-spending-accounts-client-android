@@ -26,7 +26,7 @@ glob.sync('./src/pages/**/app.js').forEach(path => {
 const config = {
     entry: entries,
     output: {
-        path: resolve(__dirname, './dist'),
+        path: resolve(__dirname, './html_dist'),
         filename: 'assets/js/[name].js',
         publicPath: process.env.NODE_ENV === 'production'?'./../':'/'
     },
@@ -79,7 +79,19 @@ const config = {
                 }]
             },
             {
-                test: /\.(png|jpg|jpeg|gif|eot|ttf|woff|woff2|svg|svgz)(\?.+)?$/,
+                test: /\.(eot|ttf|woff|woff2)(\?.+)?$/,
+                use: [{
+                    loader: 'file-loader',
+                    options: {
+                        // useRelativePath: process.env.NODE_ENV === "production",
+                        // outputPath:'font',
+                        publicPath:'../../../',
+                        name: 'assets/font/[name].[hash:7].[ext]'
+                    }
+                }]
+            },
+            {
+                test: /\.(png|jpg|jpeg|gif|svg|svgz)(\?.+)?$/,
                 exclude: /favicon\.png$/,
                 use: [{
                     loader: 'url-loader',
@@ -92,7 +104,7 @@ const config = {
         ]
     },
     plugins: [
-        new CleanWebpackPlugin('dist'),
+        new CleanWebpackPlugin('html_dist'),
         new webpack.optimize.ModuleConcatenationPlugin(),
         new CommonsChunkPlugin({
             name: 'vendors',
