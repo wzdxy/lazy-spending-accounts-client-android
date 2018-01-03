@@ -48,7 +48,7 @@
                                     xs12
                                     label="Serial"
                                     v-bind:items="allSerial"
-                                    v-model="serial"
+                                    v-model="serials"
                                     max-height="300"
                             ></v-select>
                             <v-text-field
@@ -75,7 +75,7 @@
         data() {
             return {
                 allSerial: ['Alabama', 'Alaska', 'American Samoa', 'Arizona', 'Oklahoma', 'Oregon', 'Palau', 'Pennsylvania', 'Puerto Rico'],
-                serial: [],
+                serials: '',
                 cost: '',
                 costDate: '',
                 costTime: ''
@@ -88,15 +88,15 @@
                     cost:this.cost,
                     costDate:this.costDate,
                     costTime:this.costTime,
-                    serial:this.serial
+                    serials:this.serials
                 }))
             },
             resetForm() {
-                let today=new Date()
-                this.costDate=today.getFullYear()+'-'+(today.getMonth()+1+'-').padLeft(3,'0')+String(today.getDate()).padLeft(2,'0')
-                this.time=''
+                let now=new Date()
+                this.costDate=now.getFullYear()+'-'+(now.getMonth()+1+'-').padLeft(3,'0')+String(now.getDate()).padLeft(2,'0')
+                this.costTime=String(now.getHours()).padLeft(2,'0')+':'+String(now.getMinutes()).padLeft(2,'0')
                 this.cost=''
-                this.serial=[]
+                this.serials=''
             }
         },
         created(){

@@ -1,8 +1,10 @@
 package me.zchi.lazyaccounts;
 
 import android.annotation.SuppressLint;
+import android.content.ContentValues;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,9 @@ import android.webkit.ValueCallback;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 /**
@@ -28,9 +33,27 @@ public class AddFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         class JsObject {
+            /**
+             * 从 js 保存账单到数据库
+             * @param  s 发送的json文件
+             * @return Boolean 是否保存成功
+             */
             @JavascriptInterface
             public Boolean addAccount(String s){
                 Toast.makeText(getContext(),s,Toast.LENGTH_LONG).show();
+                AccountDbHelper db=new AccountDbHelper(getContext());
+                ContentValues c = new ContentValues();
+                try {
+                    JSONObject json = new JSONObject(s);
+                    c.put("[_CostDate]",json.getString("costDate"));
+                    c.put("[_CostTime]",json.getString("costTime"));
+                    c.put("[_Serials]",json.getString("serials"));
+                    c.put("[_Cost]",json.getInt("cost"));
+                }catch (JSONException e){
+                    Log.d("JSON", "addAccount: "+e.getMessage());
+                    return false;
+                }
+                db.insert("_accounts_list",null,c);
                 return true;
             }
         }

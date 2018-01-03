@@ -1,5 +1,5 @@
 .DS_Store
 node_modules/
-dist/
+html_dist/
 npm-debug.log
 .idea
