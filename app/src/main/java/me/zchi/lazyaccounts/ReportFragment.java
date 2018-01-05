@@ -27,7 +27,7 @@ public class ReportFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_report, container, false);
         WebView.setWebContentsDebuggingEnabled(true);
         wv1 = rootView.findViewById(R.id.report_web);
-        wv1.loadUrl("file:///android_asset/html_dist/report/index.html");
+        wv1.loadUrl("file:///android_asset/html/report/index.html");
         wv1.getSettings().setJavaScriptEnabled(true);
         wv1.setWebViewClient(new WebViewClient());
         return rootView;

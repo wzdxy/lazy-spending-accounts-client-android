@@ -2,8 +2,10 @@ package me.zchi.lazyaccounts;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class AccountDbHelper extends SQLiteOpenHelper {
     final static int version = 1;
@@ -32,5 +34,12 @@ public class AccountDbHelper extends SQLiteOpenHelper {
     public void insert(String table, String nullColumnHack, ContentValues values){
         SQLiteDatabase db = this.getWritableDatabase();
         db.insert(table, nullColumnHack, values);
+    }
+
+    public Cursor search(String[] args){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM [_accounts_list]",args);
+        Log.d("Database",cursor.getColumnName(0));
+        return cursor;
     }
 }

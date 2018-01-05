@@ -63,7 +63,7 @@ public class AddFragment extends Fragment {
         wv1.setWebViewClient(new WebViewClient());
         wv1.getSettings().setJavaScriptEnabled(true);
         wv1.addJavascriptInterface(new JsObject(),"native");
-        wv1.loadUrl("file:///android_asset/html_dist/add/index.html");
+        wv1.loadUrl("file:///android_asset/html/add/index.html");
 
         wv1.evaluateJavascript("newHtml()", new ValueCallback<String>() {
             @Override
