@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.JavascriptInterface;
+import android.webkit.ValueCallback;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
@@ -20,6 +21,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 
 /**
@@ -27,7 +29,7 @@ import java.util.List;
  */
 public class AccountFragment extends Fragment {
 
-    private WebView wv1;
+    public WebView wv1;
 
     public AccountFragment() {
         // Required empty public constructor
@@ -39,7 +41,6 @@ public class AccountFragment extends Fragment {
         class JsObject {
             @JavascriptInterface
             public String getAllAccounts(){
-                Toast.makeText(getContext(),"getAllAccounts",Toast.LENGTH_LONG).show();
                 AccountDbHelper db=new AccountDbHelper(getContext());
                 Cursor cursor = db.search(null);
                 ArrayList<JSONObject> list = new ArrayList<JSONObject>();
@@ -47,6 +48,7 @@ public class AccountFragment extends Fragment {
                     while (!cursor.isAfterLast()) {
                         JSONObject acc=new JSONObject();
                         try {
+                            acc.put("id",cursor.getInt(cursor.getColumnIndex("_Id")));
                             acc.put("cost",cursor.getInt(cursor.getColumnIndex("_Cost")));
                             acc.put("date",cursor.getString(cursor.getColumnIndex("_CostDate")));
                             acc.put("time",cursor.getString(cursor.getColumnIndex("_CostTime")));
@@ -60,6 +62,12 @@ public class AccountFragment extends Fragment {
                 }
                 JSONArray json = new JSONArray(list);
                 return json.toString();
+            }
+
+            @JavascriptInterface
+            public String deleteAccount(){
+                AccountDbHelper db=new AccountDbHelper(getContext());
+                return "";
             }
         }
         View rootView = inflater.inflate(R.layout.fragment_account, container, false);
@@ -78,5 +86,21 @@ public class AccountFragment extends Fragment {
         wv1.removeAllViews();
         wv1.clearHistory();
         wv1=null;
+    }
+
+    public void reFreshAccounts(){
+        Log.d("Account","Before evaluateJavascript");
+        try {
+            wv1.evaluateJavascript("refreshList()",new ValueCallback<String>() {
+                @Override
+                public void onReceiveValue(String s) {
+                    Log.d("Account","onReceiveValue");
+                    if(s!=null)Toast.makeText(getContext(),s,Toast.LENGTH_LONG).show();
+                }
+            });
+        }catch (Exception e){
+            Log.e("Eval Js ReFreshAccounts",e.toString());
+        }
+
     }
 }

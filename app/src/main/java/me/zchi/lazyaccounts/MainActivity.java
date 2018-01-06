@@ -80,8 +80,11 @@ public class MainActivity extends AppCompatActivity {
                 switch (position) {
                     case 0:
                         return addFragment;
-                    case 1:
+                    case 1:{
+                        Log.d("setAdapter","accountFragment");
+                        if(accountFragment.wv1!=null)accountFragment.reFreshAccounts();
                         return accountFragment;
+                    }
                     case 2:
                         return reportFragment;
                 }
@@ -107,6 +110,8 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case 1:
                         navigation.setSelectedItemId(R.id.navigation_account);
+                        Log.d("onPageSelected","setSelectedItemId");
+                        accountFragment.reFreshAccounts();
                         break;
                     case 2:
                         navigation.setSelectedItemId(R.id.navigation_report);

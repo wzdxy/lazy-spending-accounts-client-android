@@ -18,6 +18,7 @@ public class AccountDbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         //创建表
         String create_today_plan_sql = "CREATE TABLE [_accounts_list] ("
+                + "[_Id] integer PRIMARY KEY autoincrement,"
                 + "[_CostDate] char(100),"
                 + "[_CostTime] char(100),"
                 + "[_Serials] varchar(100),"
