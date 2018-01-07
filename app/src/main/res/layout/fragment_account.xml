@@ -11,6 +11,7 @@
     <WebView
         android:id="@+id/account_web"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="fill_parent"
+        android:layout_marginBottom="55dp">
     </WebView>
 </FrameLayout>

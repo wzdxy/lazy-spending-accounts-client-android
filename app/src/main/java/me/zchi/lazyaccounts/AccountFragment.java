@@ -65,9 +65,11 @@ public class AccountFragment extends Fragment {
             }
 
             @JavascriptInterface
-            public String deleteAccount(){
+            public Integer deleteAccount(String id){
                 AccountDbHelper db=new AccountDbHelper(getContext());
-                return "";
+                Integer res = db.delete(id);
+                Toast.makeText(getContext(),"delete "+res,Toast.LENGTH_LONG).show();
+                return res;
             }
         }
         View rootView = inflater.inflate(R.layout.fragment_account, container, false);

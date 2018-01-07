@@ -43,4 +43,9 @@ public class AccountDbHelper extends SQLiteOpenHelper {
         Log.d("Database",cursor.getColumnName(0));
         return cursor;
     }
+
+    public Integer delete(String id){
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.delete("_accounts_list","_Id="+id,null);
+    }
 }
