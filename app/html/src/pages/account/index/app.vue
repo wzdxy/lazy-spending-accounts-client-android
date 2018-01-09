@@ -24,19 +24,18 @@ export default {
   },
 
   methods: {
-    getAccounts () {
+    getAllAccounts () {
         if(window.native){
             let res = native.getAllAccounts()
             this.accounts = JSON.parse(res);
         }else{
             console.log("getAllAccounts");
         }
-
     },
     deleteAccount(id){
         if(window.native){
             let res = native.deleteAccount(id);
-            this.getAccounts();
+            this.getAllAccounts();
         }else{
             console.log("deleteAccount",JSON.stringify(this.accounts.filter((i)=>i.id===id)));
         }

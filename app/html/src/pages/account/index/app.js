@@ -12,7 +12,7 @@ window.vm = new Vue({
 
 window.refreshList = function () {
     console.log('refreshList')
-    window.vm.$children[0].getAccounts()
+    window.vm.$children[0].getAllAccounts()
     return '已经刷新'
 }
 

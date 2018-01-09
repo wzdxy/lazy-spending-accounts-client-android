@@ -74,7 +74,7 @@
     export default {
         data() {
             return {
-                allSerial: ['Alabama', 'Alaska', 'American Samoa', 'Arizona', 'Oklahoma', 'Oregon', 'Palau', 'Pennsylvania', 'Puerto Rico'],
+                allSerial: ['三餐', '交通', '零食', '买菜', '日用品', '美妆', '服饰', '烟酒茶', '教育'],
                 serials: '',
                 cost: '',
                 costDate: '',

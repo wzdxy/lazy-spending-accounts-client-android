@@ -86,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
                         return accountFragment;
                     }
                     case 2:
+                        if(reportFragment.wv1!=null)reportFragment.reFreshReport();
                         return reportFragment;
                 }
                 return null;
@@ -115,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case 2:
                         navigation.setSelectedItemId(R.id.navigation_report);
+                        reportFragment.reFreshReport();
                         break;
                 }
 
